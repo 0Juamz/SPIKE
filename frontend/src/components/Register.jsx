@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import api from '../services/api'
+import { useNavigate } from 'react-router-dom'; // Importa o hook
+
 
 function Register() {
-      
+  const navigate = useNavigate();
     const [formData, setFormData] = useState({
       name: '',
       email: '',
@@ -18,12 +20,9 @@ function Register() {
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const success = await createUser();
-
-      if (success) {
-        alert('Usuário criado com sucesso');
-      } else {
-        alert('Erro ao criar usuário');
+      const sucess = await createUser();
+      if (sucess) {
+        navigate('/login');
       }
       console.log('Form data submitted:', formData);
     };
@@ -31,16 +30,13 @@ function Register() {
     async function createUser() {
       try {
         const response = await api.post('/user', formData);
-        console.log('Usuário criado com sucesso:', response.data);
-        //alert('Usuário criado com sucesso!');
         setFormData({ name: '', email: '', password: '' }); // Limpa o formulário
-        setError(''); // Limpa qualquer erro anterior
+        console.log('Usuário criado com sucesso:', response.data);
+        alert('Usuário criado com sucesso');
         return true;
       } catch (error) {
         console.error('Erro ao criar usuário:', error);
-        // Atualiza o estado com uma mensagem amigável ou com detalhes do erro
-        //setError(error.response?.data?.message || 'Erro ao criar usuário. Por favor, tente novamente.');
-        //alert('Erro ao criar usuário');
+        alert('Usuário criado com sucesso');
         return false;
       }
     }

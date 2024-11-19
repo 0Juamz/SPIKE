@@ -1,7 +1,7 @@
 import Info from './components/Info'
 import User from './components/Register'
 import Home from './components/Login'
-import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Link, Route, Navigate } from 'react-router-dom';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
             {/* Links de navegação */}
             <ul className="flex space-x-4">
               <li>
-                <Link to="/" className="text-white hover:text-blue-200 transition-colors duration-200">
+                <Link to="/login" className="text-white hover:text-blue-200 transition-colors duration-200">
                   Login
                 </Link>
               </li>
@@ -39,7 +39,8 @@ function App() {
         {/* Conteúdo da página */}
         <div>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Home />} />
             <Route path="/usuarios" element={<User />} />
             <Route path="/sobre" element={<Info />} />
           </Routes>
