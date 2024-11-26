@@ -29,14 +29,12 @@ function Register() {
 
     async function createUser() {
       try {
-        const response = await api.post('/user', formData);
+        const response = await api.post('/user/create', formData);
         setFormData({ name: '', email: '', password: '' }); // Limpa o formulário
         console.log('Usuário criado com sucesso:', response.data);
-        alert('Usuário criado com sucesso');
         return true;
       } catch (error) {
         console.error('Erro ao criar usuário:', error);
-        alert('Usuário criado com sucesso');
         return false;
       }
     }

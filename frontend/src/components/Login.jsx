@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import api from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
       name: '',
       email: '',
@@ -14,10 +17,26 @@ function Login() {
       });
     };
   
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
       e.preventDefault();
-      // Aqui você pode adicionar a lógica de envio do formulário, como uma requisição para uma API
-      console.log('Form data submitted:', formData);
+      const success = await LoginUser();
+      if (success){
+        navigate('/sobre');
+      } else{
+       alert("Usuário e/ou senha incorretos");
+      }
+    }
+
+    async function LoginUser() {
+      try {
+        const response = await api.post('/user/login', formData);
+        setFormData({email: '', password: '' }); // Limpa o formulário
+        console.log('Usuário logado:', response.data);
+        return true;
+      } catch (error) {
+        console.error('Erro ao logar:', error);
+        return false;
+      }
     };
 
     return (

@@ -1,6 +1,7 @@
 import express from 'express'
 import { PrismaClient } from '@prisma/client'
 import cors from 'cors'
+import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient();
 const app = express();
@@ -16,16 +17,36 @@ app.use(cors())
 
 /*Post*/
 const createUser = async (req, res) => {
+    const passwordCpt = await bcrypt.hash(req.body.password, 10); 
     const newUser = await prisma.account.create({
         data: {
             email: req.body.email,
             name: req.body.name,
-            password: req.body.password
+            password: passwordCpt
         }
     })
     res.status(201).json(newUser);
 }
 
+
+const login = async (req, res) => {
+    const { email, password } = req.body;
+    const user = await prisma.account.findUnique({
+        where: {
+            email: email
+        }
+    }) 
+    if(!user){
+        res.status(404).json({message :'Usuário não encontrado'});
+    } else{
+        const passwordValid = await bcrypt.compare(password, user.password);
+        if (passwordValid) {
+            res.status(201).json(user);
+        } else{
+            res.status(401).json(user);
+        }
+    }
+}
 /*put*/
 const editUser = async (req, res) => {
     await prisma.account.update({
@@ -60,5 +81,6 @@ export default {
     getUser,
     createUser,
     editUser,
-    deleteUser
+    deleteUser,
+    login
 };

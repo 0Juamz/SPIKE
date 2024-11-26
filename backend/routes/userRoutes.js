@@ -5,7 +5,9 @@ const router = express.Router();
 // Rota para obter todos os usuários
 router.get('/', userController.getUser);
 
-router.post('/', userController.createUser);
+router.post('/create', userController.createUser);
+
+router.post('/login', userController.login);
 
 router.put('/', userController.editUser);
 
