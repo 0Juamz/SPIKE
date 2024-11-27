@@ -1,3 +1,4 @@
+//Imports defaults do componente
 import React, { useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +11,7 @@ function Login() {
       password: '',
     });
   
+    //Atualiza os campos sempre que o formulário for atualizado
     const handleChange = (e) => {
       setFormData({
         ...formData,
@@ -17,13 +19,15 @@ function Login() {
       });
     };
   
+    //variavel que armazena mensagem de erro caso o login esteja errado
+    const [errorMessage, setErrorMessage] = useState('');
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const success = await LoginUser();
+      const success = await LoginUser(); //Chama a LoginUser, caso o usuário exista redireciona para a página "sobre"
       if (success){
-        navigate('/sobre');
+        navigate('/user');
       } else{
-       alert("Usuário e/ou senha incorretos");
+        setErrorMessage("Usuário e/ou senha incorretos");
       }
     }
 
@@ -31,6 +35,8 @@ function Login() {
       try {
         const response = await api.post('/user/login', formData);
         setFormData({email: '', password: '' }); // Limpa o formulário
+        localStorage.setItem('token', response.data.token); //Cria o token de acesso para outras rotas
+        localStorage.setItem('user', JSON.stringify(response.data.user)); //Salva os dados do usuário logado
         console.log('Usuário logado:', response.data);
         return true;
       } catch (error) {
@@ -39,6 +45,7 @@ function Login() {
       }
     };
 
+    //Tela de login
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
           <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
@@ -80,8 +87,14 @@ function Login() {
               type="submit"
               className="w-full bg-blue-500 text-white font-bold py-3 rounded-lg hover:bg-blue-600 focus:outline-none transition duration-200"
             >
-              Cadastrar
+              Entrar
             </button>
+            {/* Exibindo a mensagem de erro, se houver */}
+           {errorMessage && (
+             <div className="text-center text-red-500 text-sm mb-4">
+              {errorMessage}
+             </div>
+            )}
           </form>
         </div>
       );

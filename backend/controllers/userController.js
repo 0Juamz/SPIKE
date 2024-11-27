@@ -2,6 +2,7 @@ import express from 'express'
 import { PrismaClient } from '@prisma/client'
 import cors from 'cors'
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 const prisma = new PrismaClient();
 const app = express();
@@ -15,20 +16,24 @@ app.use(cors())
     res.status(200).json(users)
 }
 
-/*Post*/
+//Criar usuário
 const createUser = async (req, res) => {
-    const passwordCpt = await bcrypt.hash(req.body.password, 10); 
-    const newUser = await prisma.account.create({
-        data: {
+    try{
+      const passwordCpt = await bcrypt.hash(req.body.password, 10); 
+      const newUser = await prisma.account.create({
+          data: {
             email: req.body.email,
             name: req.body.name,
             password: passwordCpt
-        }
+          }
     })
     res.status(201).json(newUser);
+   } catch(error) {
+    res.status(500).json({ message: 'Erro ao criar usuário. Tente novamente.' });
+   }
 }
 
-
+//Login de usuário
 const login = async (req, res) => {
     const { email, password } = req.body;
     const user = await prisma.account.findUnique({
@@ -41,17 +46,26 @@ const login = async (req, res) => {
     } else{
         const passwordValid = await bcrypt.compare(password, user.password);
         if (passwordValid) {
-            res.status(201).json(user);
+            const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {expiresIn: '1h'})
+            res.status(200).json({
+                 token,
+                 user:{
+                    id: user.id,
+                    name: user.name,
+                    email: user.email
+                 },
+             });
         } else{
             res.status(401).json(user);
         }
     }
 }
-/*put*/
-const editUser = async (req, res) => {
+
+//Atualizar usuário
+const updateUser = async (req, res) => {
     await prisma.account.update({
         where: {
-            id: parseInt(req.params.id, 10)
+            id: parseInt(req.body.id, 10)
         },
         data: {
             email: req.body.email,
@@ -61,7 +75,7 @@ const editUser = async (req, res) => {
     res.status(201).json(req.body);
 }
 
-/*delete*/
+//Deletar usuário
 const deleteUser =  async (req, res) => {
     try{
     await prisma.account.delete({
@@ -80,7 +94,7 @@ const deleteUser =  async (req, res) => {
 export default {
     getUser,
     createUser,
-    editUser,
+    updateUser,
     deleteUser,
     login
 };

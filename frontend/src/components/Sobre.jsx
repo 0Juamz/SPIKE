@@ -1,4 +1,4 @@
-function Info(){
+function Sobre(){
     return (
         <div className="mt-10">
             <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">What is Lorem Ipsum?</h1>
@@ -7,4 +7,4 @@ function Info(){
     )
 }
 
-export default Info;
+export default Sobre;

@@ -9,8 +9,8 @@ router.post('/create', userController.createUser);
 
 router.post('/login', userController.login);
 
-router.put('/', userController.editUser);
+router.put('/update', userController.updateUser);
 
-router.delete('/', userController.deleteUser);
+router.delete('/delete', userController.deleteUser);
 
 export default router;

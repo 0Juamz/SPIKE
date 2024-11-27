@@ -17,14 +17,16 @@ function Register() {
         [e.target.name]: e.target.value,
       });
     };
-  
+   
+    const [errorMessage, setErrorMessage] = useState('');
     const handleSubmit = async (e) => {
       e.preventDefault();
       const sucess = await createUser();
       if (sucess) {
         navigate('/login');
+      } else {
+        setErrorMessage("Este e-mail já está sendo utilizado");
       }
-      console.log('Form data submitted:', formData);
     };
 
     async function createUser() {
@@ -98,6 +100,11 @@ function Register() {
             >
               Cadastrar
             </button>
+            {errorMessage && (
+             <div className="text-center text-red-500 text-sm mb-4">
+              {errorMessage}
+             </div>
+            )}
           </form>
         </div>
       );
