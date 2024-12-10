@@ -29,7 +29,7 @@ const createUser = async (req, res) => {
     })
     res.status(201).json(newUser);
    } catch(error) {
-    res.status(500).json({ message: 'Erro ao criar usuário. Tente novamente.' });
+    res.status(500).json({ message: 'Erro ao criar usuário. Tente novamente.', error });
    }
 }
 

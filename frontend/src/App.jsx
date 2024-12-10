@@ -6,6 +6,10 @@ import User from './components/User';
 import { BrowserRouter, Routes, Link, Route, Navigate } from 'react-router-dom';
 
 function App() {
+  //const navigate = useNavigate();
+  let user = JSON.parse(localStorage.getItem('user'));
+  let isLoggedIn = user?.id;
+  
   return (
     <div className="App">
       <BrowserRouter>
@@ -18,7 +22,16 @@ function App() {
             </h1>
 
             {/* Links de navegação */}
+            { isLoggedIn ? (
             <ul className="flex space-x-4">
+              <li>
+                <Link to="/login" className="text-white hover:text-blue-200 transition-colors duration-200">
+                  Sair
+                </Link>
+              </li>
+            </ul>
+            ) : (
+              <ul className="flex space-x-4">
               <li>
                 <Link to="/login" className="text-white hover:text-blue-200 transition-colors duration-200">
                   Login
@@ -35,13 +48,14 @@ function App() {
                 </Link>
               </li>
             </ul>
+            )}
           </div>
         </nav>
 
         {/* Conteúdo da página */}
         <div>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={isLoggedIn ? <Navigate to="/user" /> : <Navigate to="/login" />} />
             <Route path="/login" element={<Home />} />
             <Route path="/register" element={<Register />} />
             <Route path="/user" element={<User />} />
