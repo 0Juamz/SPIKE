@@ -12,11 +12,11 @@ function User(){
         email: user?.email || '',
     });
 
-    const [isDataEqual, setIsDataEqual] = useState('');
+    const [isDataEqual, setIsDataEqual] = useState(true);
     useEffect(() => {
         const isDataEqual = formData.name === user.name && formData.email === user.email;
         setIsDataEqual(isDataEqual);
-    });
+    }, [formData, user]);
 
     //Atualiza os campos sempre que o formulário for atualizado
     const handleChange = (e) => {
@@ -24,6 +24,7 @@ function User(){
           ...formData,
           [e.target.name]: e.target.value,
         });
+        setMessage();
       };
 
     //Armazena mensagem de sucesso ou erro
@@ -35,6 +36,7 @@ function User(){
             setMessage("Dados atualizados");
             // Atualiza o localStorage com os novos dados
             localStorage.setItem('user', JSON.stringify(formData));
+            setIsDataEqual(true);
         } else{
             setMessage("Erro ao atualizar dados");
         }
@@ -96,6 +98,11 @@ function User(){
             >
               Salvar
             </button>
+            {message && (
+             <div className="text-center text-blue-500 text-sm mb-4">
+              {message}
+             </div>
+            )}
           </form>
         </div>
     );

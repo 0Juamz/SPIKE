@@ -20,12 +20,3 @@ model account {
   password String
 }
 
-model test {
-  id Int @id @default(autoincrement())
-  name String
-}
-
-model test3 {
-  id Int @id @default(autoincrement())
-  name String
-}
