@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import api from '../services/api';
 import { useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({ setIsLoggedIn }) {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
       name: '',
@@ -25,6 +25,7 @@ function Login() {
       e.preventDefault();
       const success = await LoginUser(); //Chama a LoginUser, caso o usuário exista redireciona para a página "sobre"
       if (success){
+        setIsLoggedIn(true);
         navigate('/user');
       } else{
         setErrorMessage("Usuário e/ou senha incorretos");
