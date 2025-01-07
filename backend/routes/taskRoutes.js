@@ -3,7 +3,7 @@ import taskController from '../controllers/taskController.js'
 const router = express.Router();
 
 // Rota para obter todos os usuários
-//router.get('/', taskController.getUser);
+router.post('/', taskController.getTask);
 
 router.post('/create', taskController.createTask);
 

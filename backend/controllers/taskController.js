@@ -9,9 +9,13 @@ app.use(express.json())
 app.use(cors())
 
 /*Get*/
- const getUser = async (req, res) => {
-    const users = await prisma.account.findMany()
-    res.status(200).json(users)
+ const getTask = async (req, res) => {
+    const tasks = await prisma.task.findMany({
+      where:{
+        userId: parseInt(req.body.userId, 10),
+      }
+    })
+    res.status(200).json(tasks)
 }
 
 //Criar task
@@ -57,6 +61,7 @@ const deleteTask = async (req, res) => {
 }
 
 export default{
+  getTask,
   createTask,
   deleteTask
 }

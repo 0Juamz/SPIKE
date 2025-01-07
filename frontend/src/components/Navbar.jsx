@@ -19,7 +19,17 @@ function Navbar  ({ isLoggedIn, setIsLoggedIn }) {
   
           {/* Links de navegação */}
           {isLoggedIn ? (
-            <ul className="flex space-x-4">
+            <ul className="flex space-x-4">        
+              <li>
+                <Link to="/tarefa" className="text-white hover:text-blue-200 transition-colors duration-200">
+                  Tarefas
+                </Link>
+              </li>
+              <li>
+                <Link to="/user" className="text-white hover:text-blue-200 transition-colors duration-200">
+                  Perfil
+                </Link>
+              </li>
               <li>
                 <button
                   onClick={handleLogout}
@@ -39,11 +49,6 @@ function Navbar  ({ isLoggedIn, setIsLoggedIn }) {
               <li>
                 <Link to="/register" className="text-white hover:text-blue-200 transition-colors duration-200">
                   Cadastrar
-                </Link>
-              </li>
-              <li>
-                <Link to="/sobre" className="text-white hover:text-blue-200 transition-colors duration-200">
-                  Sobre
                 </Link>
               </li>
             </ul>

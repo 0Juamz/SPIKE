@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Sobre from './components/Sobre';
+import Tarefa from './components/TaskList';
 import Register from './components/Register';
 import Home from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -28,7 +28,7 @@ function App() {
             <Route path="/login" element={<Home setIsLoggedIn={setIsLoggedIn} />} />
             <Route path="/register" element={<Register />} />
             <Route path="/user" element={<User />} />
-            <Route path="/sobre" element={<ProtectedRoute><Sobre /></ProtectedRoute>} />
+            <Route path="/tarefa" element={<ProtectedRoute><Tarefa /></ProtectedRoute>} />
           </Routes>
         </div>
       </BrowserRouter>
