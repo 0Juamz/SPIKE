@@ -21,15 +21,42 @@ const createTask = async (req, res) => {
           data: {
             name: req.body.name,
             description: req.body.description,
-            userId: reqbody.userId
+            userId: req.body.userId
           }
     })
     res.status(201).json(newTask);
    } catch(error) {
-    res.status(500).json({ message: 'Erro ao criar task. Tente novamente.' });
-   }
+    console.error(error); // Log no console para diagnóstico
+    res.status(500).json({
+        message: 'Erro ao criar task.',
+        error: error.message, // Inclui a mensagem do erro
+    });
+}
+}
+
+const deleteTask = async (req, res) => {
+  try{
+    const task = await prisma.task.findFirst({
+      where: {
+        name: req.params.name
+      }
+    })
+    await prisma.task.delete({
+      where: {
+          id: task.id
+      }
+  })
+  res.status(200).json(`Task ${task.name} deletada`);
+  } catch(error){
+    console.error(error); // Log no console para diagnóstico
+    res.status(500).json({
+        message: 'Erro ao deletar task.',
+        error: error.message, // Inclui a mensagem do erro
+    });
+  }
 }
 
 export default{
-    createTask
+  createTask,
+  deleteTask
 }

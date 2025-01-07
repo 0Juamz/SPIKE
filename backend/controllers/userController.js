@@ -76,7 +76,7 @@ const updateUser = async (req, res) => {
 }
 
 //Deletar usuário
-const deleteUser =  async (req, res) => {
+const deleteUser = async (req, res) => {
     try{
     await prisma.account.delete({
         where: {

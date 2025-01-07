@@ -5,12 +5,12 @@ const router = express.Router();
 // Rota para obter todos os usuários
 //router.get('/', taskController.getUser);
 
-router.post('/createTask', taskController.createTask);
+router.post('/create', taskController.createTask);
 
 //router.post('/login', taskController.login);
 
 //router.put('/update', taskController.updateUser);
 
-//router.delete('/delete', taskController.deleteUser);
+router.delete('/delete/:name', taskController.deleteTask);
 
 export default router;
